@@ -1,0 +1,13 @@
+# Webpack
+dist/*
+
+# NPM
+node_modules/*
+package-lock.json
+
+# Files built by Visual Studio
+.vs/*
+obj/*
+*.njsproj
+*.njsproj.user
+*.sln
