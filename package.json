@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client": "cd client && npm start",
+    "client": "cd vue-client && npm run serve",
     "server": "node dist/index",
     "webpack": "webpack --config webpack.config.ts",
-    "dev": "npm install && cd client && npm install && cd .. && concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev": "npm install && cd vue-client && npm install && cd .. && concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "clean": "echo \"Error: no clean specified\" && exit 1"
   },

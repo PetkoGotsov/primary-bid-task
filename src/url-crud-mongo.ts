@@ -1,16 +1,23 @@
 import { Url } from './url';
 import urls from './url-schema';
 
-export const getUrlList = async (req: any, res: any) => {
+const getSortedUrls = async (req: any, res: any) => {
     urls.find((err: any, result: Url[]) => {
         if (err) {
-            res.send("Error!");
+            res.status(404).send("Error!");
         } else {
-            const urlList = result.sort((a, b) => b.date && a.date ? b.date.getTime() - a.date.getTime() : 0 ).map(url => url.trimmedValue);
+            const urlList = result.sort((a, b) => b.date && a.date ? b.date.getTime() - a.date.getTime() : 0).map(url => ({
+                id: url._id,
+                trimmedValue: url.trimmedValue
+            }));
             console.log(JSON.stringify(urlList))
             res.send(urlList);
         }
     });
+}
+
+export const getUrlList = async (req: any, res: any) => {
+    getSortedUrls(req, res);
 };
 
 export const createUrl = async (req: any, res: any) => {
@@ -38,15 +45,7 @@ export const createUrl = async (req: any, res: any) => {
                     res.status(404).send("Error!");
                 } else {
                     console.log(JSON.stringify(result))
-                    urls.find((err: any, result: Url[]) => {
-                        if (err) {
-                            res.status(404).send("Error!");
-                        } else {
-                            const urlList = result.sort((a, b) => b.date && a.date ? b.date.getTime() - a.date.getTime() : 0).map(url => url.trimmedValue);
-                            console.log(JSON.stringify(urlList))
-                            res.send(urlList);
-                        }
-                    });
+                    getSortedUrls(req, res);
                 }
             });
         }
@@ -59,8 +58,17 @@ export const updateUrl = async (req: any, res: any) => {
 };
 
 export const deleteUrl = async (req: any, res: any) => {
-    const urlID: number = req.body['id'];
+    const urlID: number = req.query['id'];
+    console.log(urlID + " deleting")
     //delete
+    urls.deleteOne({ _id: urlID }, function (err) {
+        if (!err) {
+            getSortedUrls(req, res);
+        }
+        else {
+            res.status(404).send("Error!");
+        }
+    });
 };
 
 const getDomainName = (url: any) => {

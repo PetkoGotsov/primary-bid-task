@@ -61,6 +61,6 @@ authorisedRoute.get('/', (req, res) => res.send('Welcome to default response of 
 authorisedRoute.get('/urls', urlCRUD.getUrlList);
 authorisedRoute.post('/urls',urlCRUD.createUrl);
 authorisedRoute.post('/updateurl',urlCRUD.updateUrl);
-authorisedRoute.post('/deleteurl', urlCRUD.deleteUrl);
+authorisedRoute.delete('/urls', urlCRUD.deleteUrl);
 
 module.exports = server
